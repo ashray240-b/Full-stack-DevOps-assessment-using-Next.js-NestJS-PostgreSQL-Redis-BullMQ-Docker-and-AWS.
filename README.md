@@ -1,0 +1,1 @@
+# Full-stack-DevOps-assessment-using-Next.js-NestJS-PostgreSQL-Redis-BullMQ-Docker-and-AWS.
