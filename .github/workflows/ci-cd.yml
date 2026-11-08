@@ -45,10 +45,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}-${{ matrix.service }}
+          images: ghcr.io/ashray240-b/vegha-${{ matrix.service }}
           tags: |
-            type=sha
-            type=raw,value=latest
+           type=sha
+           type=raw,value=latest
 
       - name: Build and push ${{ matrix.service }} image
         uses: docker/build-push-action@v6
