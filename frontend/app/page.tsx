@@ -1,7 +1,10 @@
 
+
 'use client';
 
 import { useState } from 'react';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export default function Home() {
   const [task, setTask] = useState('');
@@ -23,7 +26,7 @@ export default function Home() {
     setStatus('');
 
     try {
-      const response = await fetch('http://localhost:3001/jobs', {
+      const response = await fetch(`${API_URL}/jobs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ task }),
@@ -43,29 +46,27 @@ export default function Home() {
   };
 
   const checkStatus = async () => {
-  if (!jobId) return;
+    if (!jobId) return;
 
-  setError('');
+    setError('');
 
-  try {
-    const response = await fetch(
-      `http://localhost:3001/jobs/${jobId}`
-    );
+    try {
+      const response = await fetch(`${API_URL}/jobs/${jobId}`);
 
-    if (!response.ok) {
-      throw new Error('Could not fetch job status.');
+      if (!response.ok) {
+        throw new Error('Could not fetch job status.');
+      }
+
+      const data = await response.json();
+
+      setStatus(data.status);
+      setResult(data.result?.message || '');
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Something went wrong.'
+      );
     }
-
-    const data = await response.json();
-
-    setStatus(data.status);
-    setResult(data.result?.message || '');
-  } catch (err) {
-    setError(
-      err instanceof Error ? err.message : 'Something went wrong.'
-    );
-  }
-};
+  };
 
   return (
     <main style={{
@@ -95,21 +96,21 @@ export default function Home() {
           <p><strong>Status:</strong> {status}</p>
 
           <button
-  type="button"
-  onClick={checkStatus}
-  style={{
-    backgroundColor: '#2563eb',
-    color: '#ffffff',
-    padding: '12px 20px',
-    borderRadius: '8px',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: '16px',
-    marginTop: '10px'
-  }}
->
-  Refresh Status
-</button>
+            type="button"
+            onClick={checkStatus}
+            style={{
+              backgroundColor: '#2563eb',
+              color: '#ffffff',
+              padding: '12px 20px',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+              marginTop: '10px'
+            }}
+          >
+            Refresh Status
+          </button>
 
           {result && <p><strong>Result:</strong> {result}</p>}
         </section>
