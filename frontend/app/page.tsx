@@ -46,27 +46,27 @@ export default function Home() {
   };
 
   const checkStatus = async () => {
-    if (!jobId) return;
+  if (!jobId) return;
 
-    setError('');
+  setError('');
 
-    try {
-      const response = await fetch(`${API_URL}/jobs/${jobId}`);
+  try {
+    const response = await fetch(`${API_URL}/jobs/${jobId}`);
 
-      if (!response.ok) {
-        throw new Error('Could not fetch job status.');
-      }
-
-      const data = await response.json();
-
-      setStatus(data.status);
-      setResult(data.result?.message || '');
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Something went wrong.'
-      );
+    if (!response.ok) {
+      throw new Error('Could not fetch job status.');
     }
-  };
+
+    const data = await response.json();
+
+    setStatus(data.status);
+    setResult(data.result?.message || '');
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : 'Something went wrong.'
+    );
+  }
+};
 
   return (
     <main style={{
@@ -75,7 +75,7 @@ export default function Home() {
       padding: 24,
       fontFamily: 'Arial, sans-serif'
     }}>
-      <h1>Job Dashboard</h1>
+      <h1>Task Dashboard</h1>
       <p>Submit a task and track its background processing.</p>
 
       <input
